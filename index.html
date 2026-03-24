@@ -1,9 +1,665 @@
 <!DOCTYPE html>
-<html>
-<head><title>Jonathan Lelievre - Develop</title></head>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Jonathan Lelievre — Lead Developer at PrestaShop. PHP, Symfony, Vue.js, open-source.">
+  <title>Jonathan Lelievre — Lead Developer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    /* ── Reset & tokens ── */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --bg:          #0a0a1a;
+      --bg2:         #0f0c29;
+      --bg3:         #0d1b2a;
+      --glass:       rgba(255,255,255,0.05);
+      --glass-hover: rgba(255,255,255,0.08);
+      --border:      rgba(255,255,255,0.09);
+      --text:        #e2e8f0;
+      --muted:       #94a3b8;
+      --accent:      #a78bfa;
+      --accent2:     #60a5fa;
+      --accent3:     #34d399;
+      --accent4:     #f472b6;
+      --glow:        rgba(167,139,250,0.25);
+      --radius:      16px;
+      --font-mono:   'JetBrains Mono', monospace;
+      --font-sans:   'Inter', -apple-system, sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-sans);
+      line-height: 1.65;
+      overflow-x: hidden;
+    }
+    h1, h2, h3 { font-family: var(--font-mono); line-height: 1.1; }
+    a { color: inherit; text-decoration: none; }
+
+    /* ── Nav ── */
+    .nav {
+      position: sticky; top: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 64px; height: 64px;
+      background: rgba(10,10,26,0.85);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      font-family: var(--font-mono);
+      font-weight: 800; font-size: 17px;
+      color: var(--accent);
+    }
+    .nav-links { display: flex; gap: 32px; list-style: none; }
+    .nav-links a {
+      font-family: var(--font-mono);
+      font-size: 13px; font-weight: 700;
+      color: var(--muted);
+      transition: color .2s;
+    }
+    .nav-links a:hover, .nav-links a.active { color: var(--text); }
+    .nav-right { display: flex; align-items: center; gap: 16px; }
+    .lang-btn {
+      font-family: var(--font-mono);
+      font-size: 12px; font-weight: 700;
+      color: var(--accent);
+      background: rgba(167,139,250,0.1);
+      border: 1px solid rgba(167,139,250,0.3);
+      padding: 6px 14px; border-radius: 20px;
+      cursor: pointer; transition: background .2s;
+    }
+    .lang-btn:hover { background: rgba(167,139,250,0.18); }
+    .nav-hamburger {
+      display: none; flex-direction: column; gap: 5px;
+      cursor: pointer; padding: 4px; background: none; border: none;
+    }
+    .nav-hamburger span {
+      display: block; width: 22px; height: 2px;
+      background: var(--text); border-radius: 2px; transition: all .3s;
+    }
+
+    /* ── Hero ── */
+    .hero {
+      min-height: calc(100vh - 64px);
+      display: flex; align-items: center;
+      padding: 80px 64px;
+      background:
+        radial-gradient(ellipse at 75% 40%, rgba(167,139,250,0.1) 0%, transparent 55%),
+        radial-gradient(ellipse at 15% 85%, rgba(96,165,250,0.07) 0%, transparent 50%),
+        linear-gradient(170deg, var(--bg2) 0%, var(--bg) 60%, var(--bg3) 100%);
+      position: relative;
+    }
+    .hero::after {
+      content: ''; position: absolute; inset: 0; pointer-events: none;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='30' cy='30' r='1' fill='%23ffffff' fill-opacity='0.012'/%3E%3C/svg%3E");
+    }
+    .hero-content { max-width: 700px; position: relative; z-index: 1; }
+    .hero-eyebrow { display: flex; align-items: center; gap: 10px; margin-bottom: 28px; }
+    .eyebrow-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--accent3); box-shadow: 0 0 10px var(--accent3); flex-shrink: 0;
+    }
+    .eyebrow-text {
+      font-family: var(--font-mono);
+      font-size: 12px; font-weight: 700;
+      color: var(--accent3); letter-spacing: .12em;
+    }
+    .hero h1 {
+      font-size: clamp(48px, 7vw, 80px);
+      font-weight: 900; letter-spacing: -.04em;
+      color: #fff; margin-bottom: 16px;
+    }
+    .hero h1 .accent { color: var(--accent); }
+    .hero-subtitle {
+      font-family: var(--font-mono);
+      font-size: clamp(14px, 2vw, 18px);
+      color: var(--muted); font-weight: 700; margin-bottom: 24px;
+    }
+    .hero-subtitle strong { color: var(--accent2); }
+    .hero-bio {
+      font-size: 17px; color: var(--muted);
+      max-width: 560px; margin-bottom: 40px; line-height: 1.75;
+    }
+    .cta-row { display: flex; gap: 14px; flex-wrap: wrap; }
+
+    /* ── Buttons ── */
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 13px 28px; border-radius: 10px;
+      font-family: var(--font-sans); font-size: 15px; font-weight: 600;
+      cursor: pointer; transition: all .2s; border: none;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      color: #fff; box-shadow: 0 0 28px var(--glow);
+    }
+    .btn-primary:hover { box-shadow: 0 0 40px var(--glow); transform: translateY(-1px); }
+    .btn-glass {
+      background: var(--glass); color: var(--text);
+      border: 1px solid var(--border); backdrop-filter: blur(8px);
+    }
+    .btn-glass:hover { background: var(--glass-hover); transform: translateY(-1px); }
+
+    /* ── Stats ── */
+    .stats {
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      background: rgba(15,12,41,0.6);
+    }
+    .stats-inner { display: grid; grid-template-columns: repeat(4, 1fr); }
+    .stat-card {
+      padding: 32px 40px;
+      border-right: 1px solid var(--border);
+      backdrop-filter: blur(10px);
+    }
+    .stat-card:last-child { border-right: none; }
+    .stat-num {
+      font-family: var(--font-mono);
+      font-size: 38px; font-weight: 900;
+      line-height: 1; margin-bottom: 6px;
+    }
+    .stat-label { font-size: 13px; color: var(--muted); font-weight: 500; }
+
+    /* ── Section base ── */
+    .section { padding: 96px 64px; }
+    .section-header { margin-bottom: 52px; }
+    .section-badge {
+      display: inline-flex; align-items: center;
+      font-family: var(--font-mono);
+      font-size: 11px; font-weight: 700; letter-spacing: .12em;
+      color: var(--accent);
+      background: rgba(167,139,250,0.1);
+      border: 1px solid rgba(167,139,250,0.2);
+      padding: 5px 14px; border-radius: 20px; margin-bottom: 16px;
+    }
+    .section-header h2 {
+      font-size: clamp(26px, 3.5vw, 36px);
+      font-weight: 800; color: #fff; letter-spacing: -.03em;
+    }
+    .section-header h2 .accent { color: var(--accent); }
+    .accent { color: var(--accent); }
+
+    /* ── About ── */
+    .about { background: linear-gradient(180deg, var(--bg3) 0%, var(--bg) 100%); }
+    .about-text {
+      font-size: 18px; color: var(--muted);
+      max-width: 720px; line-height: 1.85;
+    }
+    .about-text strong { color: var(--text); font-weight: 600; }
+
+    /* ── Skills ── */
+    .skills { background: var(--bg); }
+    .skill-groups { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+    .skill-card {
+      background: var(--glass); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 28px;
+      backdrop-filter: blur(12px); transition: border-color .2s, background .2s;
+    }
+    .skill-card:hover { background: var(--glass-hover); border-color: rgba(255,255,255,0.14); }
+    .skill-card h3 {
+      font-size: 11px; font-weight: 700; letter-spacing: .14em; margin-bottom: 16px;
+    }
+    .skill-card.backend h3  { color: var(--accent); }
+    .skill-card.frontend h3 { color: var(--accent2); }
+    .skill-card.devops h3   { color: var(--accent3); }
+    .skill-card.arch h3     { color: var(--accent4); }
+    .tags { display: flex; flex-wrap: wrap; gap: 8px; }
+    .tag { font-size: 12px; font-weight: 500; padding: 5px 12px; border-radius: 6px; }
+    .backend  .tag { background: rgba(167,139,250,.1); border: 1px solid rgba(167,139,250,.2); color: var(--accent); }
+    .frontend .tag { background: rgba(96,165,250,.1);  border: 1px solid rgba(96,165,250,.2);  color: var(--accent2); }
+    .devops   .tag { background: rgba(52,211,153,.1);  border: 1px solid rgba(52,211,153,.2);  color: var(--accent3); }
+    .arch     .tag { background: rgba(244,114,182,.1); border: 1px solid rgba(244,114,182,.2); color: var(--accent4); }
+
+    /* ── Experience ── */
+    .experience { background: linear-gradient(180deg, var(--bg) 0%, var(--bg2) 100%); }
+    .timeline { display: flex; flex-direction: column; gap: 3px; }
+    .tl-item {
+      background: var(--glass); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 28px 32px;
+      backdrop-filter: blur(12px); transition: border-color .2s, background .2s;
+    }
+    .tl-item:hover { background: var(--glass-hover); border-color: rgba(255,255,255,0.14); }
+    .tl-header {
+      display: flex; justify-content: space-between;
+      align-items: flex-start; gap: 16px; margin-bottom: 6px;
+    }
+    .tl-title { font-size: 17px; font-weight: 700; color: #fff; }
+    .tl-date {
+      font-family: var(--font-mono);
+      font-size: 11px; font-weight: 700;
+      white-space: nowrap; flex-shrink: 0;
+      padding: 3px 10px; border-radius: 12px;
+    }
+    .tl-date.current { color: var(--accent);  background: rgba(167,139,250,.1); border: 1px solid rgba(167,139,250,.2); }
+    .tl-date.mid     { color: var(--accent2); background: rgba(96,165,250,.1);  border: 1px solid rgba(96,165,250,.2); }
+    .tl-date.old     { color: var(--muted);   background: rgba(148,163,184,.1); border: 1px solid rgba(148,163,184,.2); }
+    .tl-company { font-size: 14px; font-weight: 600; margin-bottom: 10px; }
+    .tl-company.current { color: var(--accent2); }
+    .tl-company.mid     { color: var(--accent2); }
+    .tl-company.old     { color: var(--muted); }
+    .tl-desc { font-size: 14px; color: var(--muted); line-height: 1.7; }
+    .tl-divider { height: 1px; background: linear-gradient(90deg, transparent, var(--border), transparent); }
+
+    /* ── Education ── */
+    .education { background: var(--bg2); }
+    .edu-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+    .edu-card {
+      background: var(--glass); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 28px;
+      backdrop-filter: blur(12px); transition: border-color .2s, background .2s;
+    }
+    .edu-card:hover { background: var(--glass-hover); border-color: rgba(255,255,255,0.14); }
+    .edu-icon {
+      font-family: var(--font-mono);
+      font-size: 11px; font-weight: 700; color: var(--accent3);
+      letter-spacing: .1em; margin-bottom: 12px;
+    }
+    .edu-degree { font-size: 16px; font-weight: 700; color: #fff; margin-bottom: 4px; }
+    .edu-school { font-size: 14px; color: var(--accent2); font-weight: 600; margin-bottom: 4px; }
+    .edu-year   { font-size: 13px; color: var(--muted); }
+
+    /* ── Contact ── */
+    .contact {
+      padding: 96px 64px 64px;
+      background: linear-gradient(180deg, var(--bg2) 0%, var(--bg) 100%);
+      border-top: 1px solid var(--border);
+    }
+    .contact-inner { max-width: 600px; }
+    .contact h2 {
+      font-size: clamp(26px, 3.5vw, 36px);
+      font-weight: 800; color: #fff; letter-spacing: -.03em; margin-bottom: 16px;
+    }
+    .contact-text { font-size: 17px; color: var(--muted); margin-bottom: 36px; line-height: 1.75; }
+
+    /* ── Footer ── */
+    footer {
+      padding: 28px 64px;
+      border-top: 1px solid var(--border);
+      background: rgba(10,10,26,0.7);
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 13px; color: var(--muted);
+    }
+    .footer-links { display: flex; gap: 24px; }
+    .footer-links a { color: var(--muted); transition: color .2s; }
+    .footer-links a:hover { color: var(--accent); }
+
+    /* ── Responsive ── */
+    @media (max-width: 900px) {
+      .nav { padding: 0 24px; }
+      .nav-links { display: none; }
+      .nav-links.open {
+        display: flex; flex-direction: column;
+        position: fixed; inset: 64px 0 0 0;
+        background: rgba(10,10,26,0.98);
+        padding: 40px 24px; gap: 28px; z-index: 99;
+        backdrop-filter: blur(20px);
+      }
+      .nav-links.open a { font-size: 20px; }
+      .nav-hamburger { display: flex; }
+      .hero { padding: 60px 24px; min-height: auto; padding-top: 80px; }
+      .stats-inner { grid-template-columns: repeat(2, 1fr); }
+      .stat-card { border-right: none; border-bottom: 1px solid var(--border); }
+      .stat-card:nth-child(odd)  { border-right: 1px solid var(--border); }
+      .stat-card:nth-last-child(-n+2) { border-bottom: none; }
+      .section { padding: 64px 24px; }
+      .skill-groups { grid-template-columns: 1fr; }
+      .edu-grid { grid-template-columns: 1fr; }
+      .contact { padding: 64px 24px 48px; }
+      footer { padding: 24px; flex-direction: column; gap: 12px; text-align: center; }
+    }
+    @media (max-width: 480px) {
+      .hero h1 { font-size: 42px; }
+      .tl-header { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
 <body>
-    <h1>Jonathan Lelievre - Develop</h1>
-    <h2>Site en construction</h2>
-    <h3>Coolify is cool</h3>
+
+  <!-- ── Navigation ── -->
+  <nav class="nav">
+    <a class="nav-logo" href="#">jolelievre</a>
+    <ul class="nav-links" id="nav-links">
+      <li><a href="#about"      data-i18n="nav_about">About</a></li>
+      <li><a href="#skills"     data-i18n="nav_skills">Skills</a></li>
+      <li><a href="#experience" data-i18n="nav_experience">Experience</a></li>
+      <li><a href="#education"  data-i18n="nav_education">Education</a></li>
+      <li><a href="#contact"    data-i18n="nav_contact">Contact</a></li>
+    </ul>
+    <div class="nav-right">
+      <button class="lang-btn" id="lang-btn" aria-label="Switch language">FR</button>
+      <button class="nav-hamburger" id="hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ── Hero ── -->
+  <section class="hero">
+    <div class="hero-content">
+      <div class="hero-eyebrow">
+        <div class="eyebrow-dot"></div>
+        <span class="eyebrow-text" data-i18n="hero_eyebrow">OPEN TO OPPORTUNITIES</span>
+      </div>
+      <h1>Jonathan<br><span class="accent">Lelievre</span></h1>
+      <p class="hero-subtitle">Lead Developer · <strong>PrestaShop</strong></p>
+      <p class="hero-bio" data-i18n="hero_bio">Passionate about computers since childhood, I chose to make it my career. I lead the open-source core team at PrestaShop — building robust APIs, modern architecture, and developer tooling for one of the world's top e-commerce platforms.</p>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="https://github.com/jolelievre" target="_blank" rel="noopener">GitHub</a>
+        <a class="btn btn-glass"   href="https://www.linkedin.com/in/jolelievre/" target="_blank" rel="noopener">LinkedIn</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Stats ── -->
+  <div class="stats">
+    <div class="stats-inner">
+      <div class="stat-card">
+        <div class="stat-num" style="color:var(--accent)">15+</div>
+        <div class="stat-label" data-i18n="stat_xp">Years of experience</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num" style="color:var(--accent)">7+</div>
+        <div class="stat-label" data-i18n="stat_ps">Years at PrestaShop</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num" style="color:var(--accent2)">76</div>
+        <div class="stat-label" data-i18n="stat_repos">GitHub repositories</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num" style="color:var(--accent3)">10+</div>
+        <div class="stat-label" data-i18n="stat_mentored">Developers mentored</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── About ── -->
+  <section class="section about" id="about">
+    <div class="section-header">
+      <div class="section-badge" data-i18n="about_badge">ABOUT</div>
+      <h2 data-i18n="about_title">Who I <span class="accent">am</span></h2>
+    </div>
+    <p class="about-text" data-i18n="about_text">I'm a <strong>Lead Developer</strong> at PrestaShop, where I've spent 7+ years contributing to and leading the open-source core team. My work spans <strong>API design</strong>, <strong>Symfony migrations</strong>, <strong>CQRS architecture</strong>, and <strong>CI/CD pipelines</strong>. I love tackling hard problems, mentoring developers, and building systems that thousands of merchants rely on every day. Beyond the code, I'm a conference speaker, open-source contributor, and advocate for quality engineering practices.</p>
+  </section>
+
+  <!-- ── Skills ── -->
+  <section class="section skills" id="skills">
+    <div class="section-header">
+      <div class="section-badge" data-i18n="skills_badge">SKILLS</div>
+      <h2 data-i18n="skills_title">What I <span class="accent">build with</span></h2>
+    </div>
+    <div class="skill-groups">
+      <div class="skill-card backend">
+        <h3 data-i18n="skill_backend">BACKEND</h3>
+        <div class="tags">
+          <span class="tag">PHP</span><span class="tag">Symfony</span><span class="tag">CQRS</span>
+          <span class="tag">ApiPlatform</span><span class="tag">OAuth2</span>
+          <span class="tag">MySQL</span><span class="tag">Redis</span><span class="tag">REST API</span>
+        </div>
+      </div>
+      <div class="skill-card frontend">
+        <h3 data-i18n="skill_frontend">FRONTEND</h3>
+        <div class="tags">
+          <span class="tag">TypeScript</span><span class="tag">Vue.js</span>
+          <span class="tag">JavaScript</span><span class="tag">HTML / CSS</span><span class="tag">React</span>
+        </div>
+      </div>
+      <div class="skill-card devops">
+        <h3 data-i18n="skill_devops">DEVOPS &amp; TOOLS</h3>
+        <div class="tags">
+          <span class="tag">Git / GitHub</span><span class="tag">Docker</span>
+          <span class="tag">GitHub Actions</span><span class="tag">PHPUnit</span>
+          <span class="tag">Behat</span><span class="tag">Playwright</span><span class="tag">AWS</span>
+        </div>
+      </div>
+      <div class="skill-card arch">
+        <h3 data-i18n="skill_arch">ARCHITECTURE</h3>
+        <div class="tags">
+          <span class="tag">Software Design</span><span class="tag">ADR</span>
+          <span class="tag">Open Source</span><span class="tag">Team Leadership</span>
+          <span class="tag">Code Review</span><span class="tag">Agile / SCRUM</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Experience ── -->
+  <section class="section experience" id="experience">
+    <div class="section-header">
+      <div class="section-badge" data-i18n="exp_badge">EXPERIENCE</div>
+      <h2 data-i18n="exp_title">Career <span class="accent">timeline</span></h2>
+    </div>
+    <div class="timeline">
+
+      <div class="tl-item">
+        <div class="tl-header">
+          <div class="tl-title" data-i18n="exp1_title">Lead Developer, Open Source Team</div>
+          <span class="tl-date current" data-i18n="exp1_date">2023 — present</span>
+        </div>
+        <div class="tl-company current">PrestaShop · Remote</div>
+        <div class="tl-desc" data-i18n="exp1_desc">Leading a team of 5–10 developers. Designed and implemented an OAuth2 API layer using ApiPlatform and CQRS commands. Responsible for mentoring, onboarding, technical architecture decisions (ADR), sprint planning with PO/PM, and acting as technical referent across teams.</div>
+      </div>
+
+      <div class="tl-divider"></div>
+
+      <div class="tl-item">
+        <div class="tl-header">
+          <div class="tl-title" data-i18n="exp2_title">Senior Core Developer</div>
+          <span class="tl-date current" data-i18n="exp2_date">2018 — 2022</span>
+        </div>
+        <div class="tl-company current">PrestaShop · Remote</div>
+        <div class="tl-desc" data-i18n="exp2_desc">Core open-source maintainer. Led the Symfony migration and CQRS refactoring. Set up the full CI/CD pipeline (PHPUnit, Behat, Playwright, GitHub Actions, Docker). Led a 3-person migration team, wrote developer documentation, and presented at technical events.</div>
+      </div>
+
+      <div class="tl-divider"></div>
+
+      <div class="tl-item">
+        <div class="tl-header">
+          <div class="tl-title" data-i18n="exp3_title">Senior Full Stack Developer</div>
+          <span class="tl-date mid" data-i18n="exp3_date">2015 — 2018</span>
+        </div>
+        <div class="tl-company mid">Display Interactive · Nantes</div>
+        <div class="tl-desc" data-i18n="exp3_desc">Built and maintained the back-office of an InFlight Entertainment (IFE) platform, including REST APIs for media content delivery on planes. Stack: PHP/Symfony, React, MySQL, Redis, AWS (SQS, SNS, S3), Docker, Nginx.</div>
+      </div>
+
+      <div class="tl-divider"></div>
+
+      <div class="tl-item">
+        <div class="tl-header">
+          <div class="tl-title" data-i18n="exp4_title">Web Developer</div>
+          <span class="tl-date old" data-i18n="exp4_date">2011 — 2015</span>
+        </div>
+        <div class="tl-company old">SpeakyPlanet · Angers</div>
+        <div class="tl-desc" data-i18n="exp4_desc">Full-stack developer on an educational gaming platform for children learning English (30 000+ users). Built PHP/Symfony backend, Flash/AS3 games, iOS &amp; Android tablet apps (Adobe AIR), and handled server &amp; CDN administration.</div>
+      </div>
+
+      <div class="tl-divider"></div>
+
+      <div class="tl-item">
+        <div class="tl-header">
+          <div class="tl-title" data-i18n="exp5_title">Freelance Web Developer</div>
+          <span class="tl-date old" data-i18n="exp5_date">2009 — 2011</span>
+        </div>
+        <div class="tl-company old">Self-employed · Angers</div>
+        <div class="tl-desc" data-i18n="exp5_desc">Various client projects in PHP/MySQL, Symfony, PrestaShop, Joomla. Flash/Flex components (banners, image editors). HTML/CSS integration and JavaScript development.</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── Education ── -->
+  <section class="section education" id="education">
+    <div class="section-header">
+      <div class="section-badge" data-i18n="edu_badge">EDUCATION &amp; CERTIFICATIONS</div>
+      <h2 data-i18n="edu_title">Academic <span class="accent">background</span></h2>
+    </div>
+    <div class="edu-grid">
+      <div class="edu-card">
+        <div class="edu-icon">MASTER'S DEGREE</div>
+        <div class="edu-degree" data-i18n="edu1_degree">Engineering — Intermedia &amp; Multimedia</div>
+        <div class="edu-school">EPITA</div>
+        <div class="edu-year">2006 — 2009</div>
+      </div>
+      <div class="edu-card">
+        <div class="edu-icon">CLASSE PRÉPA</div>
+        <div class="edu-degree" data-i18n="edu2_degree">MPSI / PSI — Preparatory class</div>
+        <div class="edu-school">Lycée Bergson, Angers</div>
+        <div class="edu-year">2004 — 2006</div>
+      </div>
+      <div class="edu-card">
+        <div class="edu-icon" style="color:var(--accent2)">CERTIFICATION</div>
+        <div class="edu-degree" data-i18n="edu3_degree">Mastering Web Quality Assurance</div>
+        <div class="edu-school">Opquast</div>
+        <div class="edu-year" data-i18n="edu3_year">Issued Feb. 2020</div>
+      </div>
+      <div class="edu-card">
+        <div class="edu-icon" style="color:var(--accent4)">LANGUAGES</div>
+        <div class="edu-degree" data-i18n="edu4_langs">French · English · Spanish</div>
+        <div class="edu-school" data-i18n="edu4_sub">Native · Professional · Intermediate</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Contact ── -->
+  <section class="contact" id="contact">
+    <div class="contact-inner">
+      <div class="section-badge" data-i18n="contact_badge">CONTACT</div>
+      <h2 data-i18n="contact_title">Let's work<br><span class="accent">together</span></h2>
+      <p class="contact-text" data-i18n="contact_text">Open to Lead Developer, Senior Engineer, and Software Architect opportunities. Feel free to reach out via LinkedIn or explore my work on GitHub.</p>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="https://github.com/jolelievre"          target="_blank" rel="noopener">GitHub</a>
+        <a class="btn btn-glass"   href="https://www.linkedin.com/in/jolelievre/" target="_blank" rel="noopener">LinkedIn</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Footer ── -->
+  <footer>
+    <span>© 2026 Jonathan Lelievre</span>
+    <div class="footer-links">
+      <a href="https://github.com/jolelievre"          target="_blank" rel="noopener">GitHub</a>
+      <a href="https://www.linkedin.com/in/jolelievre/" target="_blank" rel="noopener">LinkedIn</a>
+    </div>
+  </footer>
+
+  <script>
+    /* ── Translations ── */
+    const i18n = {
+      en: {
+        nav_about:'About', nav_skills:'Skills', nav_experience:'Experience',
+        nav_education:'Education', nav_contact:'Contact',
+        hero_eyebrow:'OPEN TO OPPORTUNITIES',
+        hero_bio:"Passionate about computers since childhood, I chose to make it my career. I lead the open-source core team at PrestaShop \u2014 building robust APIs, modern architecture, and developer tooling for one of the world\u2019s top e-commerce platforms.",
+        stat_xp:'Years of experience', stat_ps:'Years at PrestaShop',
+        stat_repos:'GitHub repositories', stat_mentored:'Developers mentored',
+        about_badge:'ABOUT',
+        about_title:'Who I <span class="accent">am</span>',
+        about_text:'I\u2019m a <strong>Lead Developer</strong> at PrestaShop, where I\u2019ve spent 7+ years contributing to and leading the open-source core team. My work spans <strong>API design</strong>, <strong>Symfony migrations</strong>, <strong>CQRS architecture</strong>, and <strong>CI/CD pipelines</strong>. I love tackling hard problems, mentoring developers, and building systems that thousands of merchants rely on every day. Beyond the code, I\u2019m a conference speaker, open-source contributor, and advocate for quality engineering practices.',
+        skills_badge:'SKILLS',
+        skills_title:'What I <span class="accent">build with</span>',
+        skill_backend:'BACKEND', skill_frontend:'FRONTEND',
+        skill_devops:'DEVOPS & TOOLS', skill_arch:'ARCHITECTURE',
+        exp_badge:'EXPERIENCE',
+        exp_title:'Career <span class="accent">timeline</span>',
+        exp1_title:'Lead Developer, Open Source Team', exp1_date:'2023 \u2014 present',
+        exp1_desc:'Leading a team of 5\u201310 developers. Designed and implemented an OAuth2 API layer using ApiPlatform and CQRS commands. Responsible for mentoring, onboarding, technical architecture decisions (ADR), sprint planning with PO/PM, and acting as technical referent across teams.',
+        exp2_title:'Senior Core Developer', exp2_date:'2018 \u2014 2022',
+        exp2_desc:'Core open-source maintainer. Led the Symfony migration and CQRS refactoring. Set up the full CI/CD pipeline (PHPUnit, Behat, Playwright, GitHub Actions, Docker). Led a 3-person migration team, wrote developer documentation, and presented at technical events.',
+        exp3_title:'Senior Full Stack Developer', exp3_date:'2015 \u2014 2018',
+        exp3_desc:'Built and maintained the back-office of an InFlight Entertainment (IFE) platform, including REST APIs for media content delivery on planes. Stack: PHP/Symfony, React, MySQL, Redis, AWS (SQS, SNS, S3), Docker, Nginx.',
+        exp4_title:'Web Developer', exp4_date:'2011 \u2014 2015',
+        exp4_desc:'Full-stack developer on an educational gaming platform for children learning English (30\u2009000+ users). Built PHP/Symfony backend, Flash/AS3 games, iOS & Android tablet apps (Adobe AIR), and handled server & CDN administration.',
+        exp5_title:'Freelance Web Developer', exp5_date:'2009 \u2014 2011',
+        exp5_desc:'Various client projects in PHP/MySQL, Symfony, PrestaShop, Joomla. Flash/Flex components (banners, image editors). HTML/CSS integration and JavaScript development.',
+        edu_badge:'EDUCATION & CERTIFICATIONS',
+        edu_title:'Academic <span class="accent">background</span>',
+        edu1_degree:'Engineering \u2014 Intermedia & Multimedia',
+        edu2_degree:'MPSI / PSI \u2014 Preparatory class',
+        edu3_degree:'Mastering Web Quality Assurance', edu3_year:'Issued Feb. 2020',
+        edu4_langs:'French \u00b7 English \u00b7 Spanish', edu4_sub:'Native \u00b7 Professional \u00b7 Intermediate',
+        contact_badge:'CONTACT',
+        contact_title:'Let\u2019s work<br><span class="accent">together</span>',
+        contact_text:'Open to Lead Developer, Senior Engineer, and Software Architect opportunities. Feel free to reach out via LinkedIn or explore my work on GitHub.',
+      },
+      fr: {
+        nav_about:'À propos', nav_skills:'Compétences', nav_experience:'Expérience',
+        nav_education:'Formation', nav_contact:'Contact',
+        hero_eyebrow:'OUVERT AUX OPPORTUNITÉS',
+        hero_bio:"Passionné d\u2019informatique depuis l\u2019enfance, j\u2019en ai fait mon métier. Je dirige l\u2019équipe open-source chez PrestaShop \u2014 conception d\u2019APIs robustes, architecture moderne et outillage développeur pour l\u2019une des meilleures plateformes e-commerce au monde.",
+        stat_xp:'Ans d\u2019expérience', stat_ps:'Ans chez PrestaShop',
+        stat_repos:'Dépôts GitHub', stat_mentored:'Développeurs encadrés',
+        about_badge:'À PROPOS',
+        about_title:'Qui je <span class="accent">suis</span>',
+        about_text:'Je suis <strong>Lead Developer</strong> chez PrestaShop, où je contribue depuis 7+ ans à l\u2019équipe open-source que je dirige aujourd\u2019hui. Mon travail couvre la <strong>conception d\u2019API</strong>, les <strong>migrations Symfony</strong>, l\u2019<strong>architecture CQRS</strong> et les <strong>pipelines CI/CD</strong>. J\u2019aime résoudre des problèmes complexes, accompagner des développeurs et construire des systèmes sur lesquels des milliers de marchands s\u2019appuient chaque jour. Au-delà du code, je suis speaker en conférences, contributeur open-source et défenseur des bonnes pratiques.',
+        skills_badge:'COMPÉTENCES',
+        skills_title:'Avec quoi je <span class="accent">construis</span>',
+        skill_backend:'BACKEND', skill_frontend:'FRONTEND',
+        skill_devops:'DEVOPS & OUTILS', skill_arch:'ARCHITECTURE',
+        exp_badge:'EXPÉRIENCE',
+        exp_title:'Parcours <span class="accent">professionnel</span>',
+        exp1_title:'Lead Developer, Équipe Open Source', exp1_date:"2023 \u2014 aujourd\u2019hui",
+        exp1_desc:"Encadrement d\u2019une équipe de 5 à 10 développeurs. Conception et implémentation d\u2019une API OAuth2 avec ApiPlatform et commandes CQRS. Mentoring, onboarding, décisions d\u2019architecture (ADR), planification sprint avec PO/PM, référent technique inter-équipes.",
+        exp2_title:'Développeur Senior Core', exp2_date:'2018 \u2014 2022',
+        exp2_desc:"Mainteneur du projet open-source PrestaShop. Pilotage de la migration Symfony et du refactoring CQRS. Mise en place du pipeline CI/CD complet (PHPUnit, Behat, Playwright, GitHub Actions, Docker). Lead d\u2019une équipe de 3 personnes, rédaction de documentation technique, présentations en salons.",
+        exp3_title:'Développeur Web Full Stack Senior', exp3_date:'2015 \u2014 2018',
+        exp3_desc:"Développement et maintenance du back-office d\u2019une plateforme IFE (InFlight Entertainment), dont plusieurs APIs REST pour la diffusion de contenus à bord d\u2019avions. Stack : PHP/Symfony, React, MySQL, Redis, AWS (SQS, SNS, S3), Docker, Nginx.",
+        exp4_title:'Développeur Web', exp4_date:'2011 \u2014 2015',
+        exp4_desc:"Développeur full-stack sur une plateforme de jeux éducatifs pour apprendre l\u2019anglais (30\u2009000+ utilisateurs). Backend PHP/Symfony, jeux Flash/AS3, apps iOS & Android (Adobe AIR), administration serveurs et CDN.",
+        exp5_title:'Développeur Web Freelance', exp5_date:'2009 \u2014 2011',
+        exp5_desc:"Missions variées en PHP/MySQL, Symfony, PrestaShop, Joomla. Composants Flash/Flex (bannières, éditeurs d\u2019images). Intégration HTML/CSS et développement JavaScript.",
+        edu_badge:'FORMATION & CERTIFICATIONS',
+        edu_title:'Parcours <span class="accent">académique</span>',
+        edu1_degree:'Ingénierie \u2014 Intermédia & Multimédia',
+        edu2_degree:'MPSI / PSI \u2014 Classe préparatoire',
+        edu3_degree:'Maîtrise de la qualité Web', edu3_year:'Délivré fév. 2020',
+        edu4_langs:'Français \u00b7 Anglais \u00b7 Espagnol', edu4_sub:'Natif \u00b7 Professionnel \u00b7 Intermédiaire',
+        contact_badge:'CONTACT',
+        contact_title:'Travaillons<br><span class="accent">ensemble</span>',
+        contact_text:"Ouvert aux postes de Lead Developer, Ingénieur Senior et Architecte Logiciel. N\u2019hésitez pas à me contacter via LinkedIn ou à explorer mes projets sur GitHub.",
+      }
+    };
+
+    let lang = 'en';
+
+    function applyLang(l) {
+      lang = l;
+      const t = i18n[l];
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const k = el.getAttribute('data-i18n');
+        if (t[k] !== undefined) el.innerHTML = t[k];
+      });
+      document.getElementById('lang-btn').textContent = l === 'en' ? 'FR' : 'EN';
+      document.documentElement.lang = l;
+    }
+
+    document.getElementById('lang-btn').addEventListener('click', () => {
+      applyLang(lang === 'en' ? 'fr' : 'en');
+    });
+
+    /* ── Mobile menu ── */
+    const hamburger = document.getElementById('hamburger');
+    const navLinks  = document.getElementById('nav-links');
+    hamburger.addEventListener('click', () => navLinks.classList.toggle('open'));
+    navLinks.querySelectorAll('a').forEach(a => {
+      a.addEventListener('click', () => navLinks.classList.remove('open'));
+    });
+
+    /* ── Active nav on scroll ── */
+    const sections = document.querySelectorAll('[id]');
+    const navAs    = document.querySelectorAll('.nav-links a');
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          navAs.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + e.target.id));
+        }
+      });
+    }, { rootMargin: '-40% 0px -55% 0px' });
+    sections.forEach(s => io.observe(s));
+  </script>
+
 </body>
 </html>
