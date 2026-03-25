@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Jonathan Lelievre — Lead Developer at PrestaShop. PHP, Symfony, Vue.js, open-source.">
   <title>Jonathan Lelievre — Lead Developer</title>
+  <link rel="icon" type="image/svg+xml" href="logo.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
@@ -51,10 +52,17 @@
       border-bottom: 1px solid var(--border);
     }
     .nav-logo {
+      display: flex; align-items: center; gap: 10px;
       font-family: var(--font-mono);
       font-weight: 800; font-size: 17px;
-      color: var(--accent);
+      color: var(--text);
+      text-decoration: none;
     }
+    .nav-logo img {
+      width: 28px; height: 28px;
+      display: block; flex-shrink: 0;
+    }
+    .nav-logo .logo-name span { color: var(--accent); }
     .nav-links { display: flex; gap: 32px; list-style: none; }
     .nav-links a {
       font-family: var(--font-mono);
@@ -109,10 +117,18 @@
       font-size: 12px; font-weight: 700;
       color: var(--accent3); letter-spacing: .12em;
     }
+    .hero-heading {
+      display: flex; align-items: center; gap: 24px;
+      margin-bottom: 16px;
+    }
+    .hero-heading-logo {
+      height: clamp(106px, 15.4vw, 176px);
+      width: auto; flex-shrink: 0;
+    }
     .hero h1 {
       font-size: clamp(48px, 7vw, 80px);
       font-weight: 900; letter-spacing: -.04em;
-      color: #fff; margin-bottom: 16px;
+      color: #fff; margin-bottom: 0;
     }
     .hero h1 .accent { color: var(--accent); }
     .hero-subtitle {
@@ -322,7 +338,10 @@
 
   <!-- ── Navigation ── -->
   <nav class="nav">
-    <a class="nav-logo" href="#">jolelievre</a>
+    <a class="nav-logo" href="#">
+      <img src="logo.svg" alt="hare logo">
+      <span class="logo-name">Jonathan <span>Lelièvre</span></span>
+    </a>
     <ul class="nav-links" id="nav-links">
       <li><a href="#about"      data-i18n="nav_about">About</a></li>
       <li><a href="#skills"     data-i18n="nav_skills">Skills</a></li>
@@ -345,7 +364,10 @@
         <div class="eyebrow-dot"></div>
         <span class="eyebrow-text" data-i18n="hero_eyebrow">OPEN TO OPPORTUNITIES</span>
       </div>
-      <h1>Jonathan<br><span class="accent">Lelievre</span></h1>
+      <div class="hero-heading">
+        <img src="logo.svg" alt="" class="hero-heading-logo" aria-hidden="true">
+        <h1>Jonathan<br><span class="accent">Lelievre</span></h1>
+      </div>
       <p class="hero-subtitle">Lead Developer · <strong>PrestaShop</strong></p>
       <p class="hero-bio" data-i18n="hero_bio">Passionate about computers since childhood, I chose to make it my career. I lead the open-source core team at PrestaShop — building robust APIs, modern architecture, and developer tooling for one of the world's top e-commerce platforms.</p>
       <div class="cta-row">
